@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WebSocket</title>
+</head>
+
+
+
+<body>
+    <p>【userId】：<div><input id="userId" name="userId" type="text" value="10"></div>
+    <p>【toUserId】：<div><input id="toUserId" name="toUserId" type="text" value="20"></div>
+    <p>【toUserId】：<div><input id="contentText" name="contentText" type="text" value="hello websocket"></div>
+    <p>【操作】：<div><a onclick="openSocket()">开启socket</a></div>
+    <p>【操作】：<div><a onclick="sendMessage()">发送消息</a></div>
+</body>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<script>
+    var socket;
+    function openSocket() {
+        if (typeof WebSocket == "undefined") {
+            console.log("浏览器不支持WebSocket");
+        } else {
+            // 指定连接的服务器地址和端口，与服务器建立连接
+            var socketUrl = "http://localhost:8080/server/" + $('#userId').val();
+            socketUrl = socketUrl.replace("http", "ws").replace("https", "ws");
+            if (socket != null) {
+                socket.close();
+                socket = null;
+            }
+            socket = new WebSocket(socketUrl);
+            socket.onopen = function () {
+                console.log("websocket打开");
+            }
+            socket.onmessage = function (msg) {
+                console.log(msg.data);
+                // 服务器传入消息，开始处理前端逻辑
+            }
+            socket.onclose = function () {
+                console.log("websocket关闭");
+            }
+            socket.onerror = function () {
+                console.log("websocket错误");
+            }
+
+        }
+
+    }
+    function sendMessage() {
+        if (typeof WebSocket == "undefined") {
+            console.log("浏览器不支持websocket");
+        } else {
+            socket.send('{"toUserId":"' + $("#toUserId").val() + '","contentText":"' + $("#contentText").val() + '"}');
+        }
+    }
+</script>
+</html>

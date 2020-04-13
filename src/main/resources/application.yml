@@ -1,0 +1,20 @@
+spring:
+  thymeleaf:
+   cash: false
+   prefix: classpath:/templates/
+   suffix: .html
+
+  application:
+    name: rocketmq-console
+
+  http:
+    encoding:
+      charset: utf-8
+      enabled: true
+      force: true
+
+rocketmq:
+  config:
+    namesrvAddr: localhost:9876
+    dataPath: /tmp/rocketmq-console/data
+    enableDashBoardCollect: true
